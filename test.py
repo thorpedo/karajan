@@ -43,11 +43,21 @@ class Karajan:
         return True
 
     def makeRequest(self,host,port,cmd):
+        data=""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-             s.connect((host, int(port) ))
-             comando = cmd+"\r\n"
-             s.sendall(b'cmd')
-             data = s.recv(1024)
+            try:
+               print('conectando')
+               s.connect((host, port ))
+               print('conectado')
+
+               comando = cmd+"\r\n"
+               s.sendall(comando.encode())
+               data = s.recv(1024)
+            except ConnectionRefusedError:
+               print("Can't connect to:" )
+               print(host)
+               print(port)
+
         return repr(data)
 
 
