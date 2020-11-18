@@ -3,6 +3,7 @@
 import socket
 import yaml
 
+
 class Karajan:
     def __init__(self,config_file):
         with open(config_file) as f:
@@ -14,31 +15,46 @@ class Karajan:
             print (nodo['ip']+":"+str(nodo['port']))
 
     def checkServers(self):
-       return True
+        result =[]
+        for nodo in self.config['servers']:
+            response = self.makeRequest(nodo['ip'],nodo['port'],'help') 
+            print(response)
+        return True
 
-    def play(nodenumber):
+    def play(self,nodenumber):
         return True
     
-    def stop(nodenumber):
+    def stop(self,nodenumber):
         return True
 
-    def pause(nodenumber):
+    def pause(self,nodenumber):
         return True
 
-    def add_to_playlist(nodenumber,media_file):
+    def add_to_playlist(self,nodenumber,media_file):
         return True
 
-    def delete_from_playlist(nodenumber,media_file):
+    def delete_from_playlist(self,nodenumber,media_file):
         return True
 
-    def get_info(nodenumber):
+    def get_info(self,nodenumber):
         return True 
 
-    def seek(nodenumer,percemt):
+    def seek(self,nodenumer,percemt):
         return True
+
+    def makeRequest(self,host,port,cmd):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+             s.connect((host, int(port) ))
+             comando = cmd+"\r\n"
+             s.sendall(b'cmd')
+             data = s.recv(1024)
+        return repr(data)
+
+
 
 
 
 if __name__ == "__main__":
     k = Karajan('config.yml')
-    k.printServers()
+    k.checkServers()
+
